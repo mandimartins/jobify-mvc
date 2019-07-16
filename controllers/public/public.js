@@ -20,7 +20,7 @@ const getVagas = dbConnection =>{
 const getVaga = dbConnection =>{
 
   return  async (req, res) => {
-    const vaga = await vagasModel.getVagaById(dbConnection,req.params.id)()
+    const vaga = await vagasModel.getVagaById(dbConnection)(req.params.id)
     
     res.render('vaga', { vaga:vaga[0]})
   }
