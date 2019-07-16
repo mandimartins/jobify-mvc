@@ -1,9 +1,12 @@
+const vagasModel = require('../../models/vagas')
+const categoriasModel = require('../../models/categorias')
+
 const getVagas = dbConnection =>{
     
   return  async (req, res) => {
-        const db = await dbConnection
-        const categoriasDb = await db.all('select * from categorias')
-        const vagas = await db.all('select * from vagas')
+
+        const categoriasDb = await categoriasModel.getAllCategorias(dbConnection)()
+        const vagas = await vagasModel.getAllVagas(dbConnection)()
         const categorias = categoriasDb.map((cat) => {
           return {
             ...cat,
@@ -15,11 +18,11 @@ const getVagas = dbConnection =>{
 }
 
 const getVaga = dbConnection =>{
+
   return  async (req, res) => {
-    const db = await dbConnection
-  
-    const vaga = await db.get(`select * from vagas where id= ${req.params.id}`)
-    res.render('vaga', { vaga })
+    const vaga = await vagasModel.getVagaById(dbConnection,req.params.id)()
+    
+    res.render('vaga', { vaga:vaga[0]})
   }
 }
 module.exports = {

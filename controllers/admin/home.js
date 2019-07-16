@@ -1,4 +1,4 @@
-const init = dbConnection =>{
+const init = () =>{
     return async (req, res) => {
         res.render('admin/home')
       }

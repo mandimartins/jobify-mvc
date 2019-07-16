@@ -1,10 +1,10 @@
+const categoriaModel = require('../../../models/categorias')
+
 const getCategorias = (dbConnection) =>{
     return async (req, res) => {
-        const db = await dbConnection
-        const categorias = await db.all('select * from categorias')
-      
+        const categorias = await categoriaModel.getAllCategorias(dbConnection)()
         res.render('admin/categorias', { categorias })
-      }
+    }
 }
 const getNewCategoria = () =>{
     return async (req, res) => {
@@ -15,8 +15,7 @@ const getNewCategoria = () =>{
 const postNewCategoria = dbConnection =>{
     return  async (req, res) => {
         const { categoria } = req.body
-        const db = await dbConnection
-        await db.run(`insert into categorias ( categoria ) values ( '${categoria}')`)
+        await categoriaModel.insertCategoria(dbConnection)(categoria)
         res.redirect('/admin/categorias')
     }
 }
@@ -24,8 +23,7 @@ const postNewCategoria = dbConnection =>{
 const getEditCategoria = (dbConnection)=>{
     return  async (req, res) => {
         const { id } = req.params
-        const db = await dbConnection
-        const categoria = await db.get('select * from categorias where id=' + id)
+        const categoria = await categoriaModel.getCategoriaById(dbConnection)(id)
         res.render('admin/editar-categoria', { categoria })
       }
 }
@@ -33,15 +31,15 @@ const postEditCategoria = dbConnection =>{
     return async (req, res) => {
         const { categoria } = req.body
         const { id } = req.params
-        const db = await dbConnection
-        await db.run(`update categorias set categoria='${categoria}' where id=${id}`)
+        await categoriaModel.updateCategoria(dbConnection)(id,categoria)
         res.redirect('/admin/categorias')
       }
 }
 const deleteCategoria = dbConnection =>{
     return async (req, res) => {
-        const db = await dbConnection
-        await db.run(`delete from categorias where id=${req.params.id}`)
+
+        await categoriaModel.deleteCategoria(dbConnection)(req.params.id)
+
         res.redirect('/admin/categorias')
       }
 }
