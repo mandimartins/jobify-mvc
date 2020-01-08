@@ -1,5 +1,5 @@
 # jobify_MVC
-Project structure improved with mvc pattern
+Crud Operations
 
 ## Install dependencies
 ```bash
